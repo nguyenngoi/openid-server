@@ -10,6 +10,9 @@ if (!process.env.HEROKU_APP_NAME && process.env.X_HEROKU_REMOTE) {
   process.env.HEROKU_APP_NAME = RegExp.$1;
 }
 
+// process.env.HEROKU_APP_NAME = 'wwwww';
+// process.env.PORT = 12345;
+// process.env.SECURE_KEY = 'asdas,e2342we,34565yrte2yr';
 assert(process.env.HEROKU_APP_NAME, 'process.env.HEROKU_APP_NAME missing');
 assert(process.env.PORT, 'process.env.PORT missing');
 assert(process.env.SECURE_KEY, 'process.env.SECURE_KEY missing, run `heroku addons:create securekey`');
@@ -22,7 +25,7 @@ const oidc = new Provider(`https://${process.env.HEROKU_APP_NAME}.herokuapp.com`
 // initialize with no keystores, dev ones will be provided
 oidc.initialize({
   // just a foobar client to be able to start an Authentication Request
-  clients: [{ client_id: 'foo', client_secret: 'bar', redirect_uris: ['http://lvh.me/cb'] }],
+  clients: [{ client_id: 'foo', client_secret: 'bar', redirect_uris: ['http://localhost:3000'] }],
 }).then(() => {
   // Heroku has a proxy in front that terminates ssl, you should trust the proxy.
   oidc.app.proxy = true;

@@ -79,7 +79,7 @@ var loginError = function (err, req, res, next) {
   res.redirect(req.path);
 };
 
-app.post('/my/login', oidc.login(validateUser), afterLogin, loginError);
+// app.post('/my/login', oidc.login(validateUser), afterLogin, loginError);
 //
 //
 // app.all('/logout', oidc.removetokens(), function(req, res, next) {

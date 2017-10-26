@@ -22,7 +22,7 @@ const oidc = new Provider(`https://${process.env.HEROKU_APP_NAME}.herokuapp.com`
 // initialize with no keystores, dev ones will be provided
 oidc.initialize({
   // just a foobar client to be able to start an Authentication Request
-  clients: [{ client_id: 'foo', client_secret: 'bar', redirect_uris: ['http://lvh.me/cb'] }],
+  clients: [{ client_id: 'foo', client_secret: 'bar', redirect_uris: ['http://localhost/callback'] }],
 }).then(() => {
   // Heroku has a proxy in front that terminates ssl, you should trust the proxy.
   oidc.app.proxy = true;

@@ -7,7 +7,7 @@
     "node": ">=8.0.0"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "heroku": "heroku create && git push heroku master"
   },
@@ -17,7 +17,14 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "ioredis": "^3.2.1",
-    "oidc-provider": "^2.4.1"
+    "oidc-provider": "^2.4.1",
+    "connect-redis": "^2.5.1",
+    "cookie-parser": "^1.4.0",
+    "errorhandler": "^1.4.2",
+    "express-session": "^1.11.3",
+    "extend": "^3.0.0",
+    "method-override": "^2.3.5",
+    "morgan": "^1.6.1"
   },
   "devDependencies": {
     "eslint": "^4.9.0",

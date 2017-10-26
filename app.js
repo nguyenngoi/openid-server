@@ -90,8 +90,10 @@ oidc.initialize({
   expressApp.set('trust proxy', true);
   expressApp.set('view engine', 'ejs');
   expressApp.set('views', path.resolve(__dirname, 'views'));
+  expressApp.use(bodyParser.urlencoded({ extended: false }));
+  expressApp.use(bodyParser.json());
 
-  const parse = bodyParser.urlencoded({ extended: false });
+  // const parse = bodyParser.urlencoded({ extended: false });
 
   expressApp.get('/interaction/:grant', async (req, res) => {
     oidc.interactionDetails(req).then((details) => {
@@ -111,13 +113,13 @@ oidc.initialize({
     });
   });
 
-  expressApp.post('/interaction/:grant/confirm', parse, (req, res) => {
+  expressApp.post('/interaction/:grant/confirm', (req, res) => {
     oidc.interactionFinished(req, res, {
       consent: {},
     });
   });
 
-  expressApp.post('/interaction/:grant/login', parse, (req, res, next) => {
+  expressApp.post('/interaction/:grant/login', (req, res, next) => {
     Account.authenticate(req.body.email, req.body.password).then((account) => {
       oidc.interactionFinished(req, res, {
         login: {

@@ -46,6 +46,7 @@ const oidc = new Provider(`https://${process.env.HEROKU_APP_NAME}.herokuapp.com`
   // don't run into weird issues with multiple interactions open
   // at a time.
   interactionUrl(ctx) {
+    console.log('interactionUrl::call with ctx info ', JSON.stringify(ctx));
     return `/interaction/${ctx.oidc.uuid}`;
   },
   features: {
@@ -70,14 +71,14 @@ const keystore = require('./keystore.json');
 oidc.initialize({
   keystore,
   clients: [
-    // reconfigured the foo client for the purpose of showing the adapter working
-    {
-      client_id: 'foo',
-      redirect_uris: ['https://example.com'],
-      response_types: ['id_token token'],
-      grant_types: ['implicit'],
-      token_endpoint_auth_method: 'none',
-    },
+    // // reconfigured the foo client for the purpose of showing the adapter working
+    // {
+    //   client_id: 'foo',
+    //   redirect_uris: ['https://example.com'],
+    //   response_types: ['id_token token'],
+    //   grant_types: ['implicit'],
+    //   token_endpoint_auth_method: 'none',
+    // },
   ],
   // configure Provider to use the adapter
   adapter: RedisAdapter,
@@ -96,6 +97,8 @@ oidc.initialize({
   // const parse = bodyParser.urlencoded({ extended: false });
 
   expressApp.get('/interaction/:grant', async (req, res) => {
+    console.log('/interaction/:grant call with url ', req.path);
+    console.log('/interaction/:grant call with params ', req.params);
     oidc.interactionDetails(req).then((details) => {
       console.log('see what else is available to you for interaction views', details);
 

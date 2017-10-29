@@ -129,12 +129,18 @@ oidc.initialize({
   });
 
   expressApp.post('/interaction/:grant/confirm', (req, res) => {
+    console.log('/interaction/:grant call with url ', req.path);
+    console.log('/interaction/:grant call with params ', req.params);
+    console.log('/interaction/:grant call with body ', req.body);
     oidc.interactionFinished(req, res, {
       consent: {},
     });
   });
 
   expressApp.post('/interaction/:grant/login', (req, res, next) => {
+    console.log('/interaction/:grant call with url ', req.path);
+    console.log('/interaction/:grant call with params ', req.params);
+    console.log('/interaction/:grant call with body ', req.body);
     Account.authenticate(req.body.email, req.body.password).then((account) => {
       oidc.interactionFinished(req, res, {
         login: {

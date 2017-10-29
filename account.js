@@ -28,6 +28,7 @@ class Account {
   }
 
   static async findById(ctx, id) {
+    console.log('Account findById call id=',id);
     // this is usually a db lookup, so let's just wrap the thing in a promise, oidc-provider expects
     // one
     return new Account(id);

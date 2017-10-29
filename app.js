@@ -6,6 +6,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const Provider = require('oidc-provider');
+const http = require('http');
 
 // since dyno metadata is no longer available, we infer the app name from heroku remote we set
 // manually. This is not specific to oidc-provider, just an easy way of getting up and running
@@ -106,7 +107,21 @@ oidc.initialize({
   expressApp.use(bodyParser.urlencoded({ extended: false }));
   expressApp.use(bodyParser.json());
 
-  // const parse = bodyParser.urlencoded({ extended: false });
+  oidc.app.middleware.unshift(async (ctx, next) => {
+    console.log('middleware call ----------------> with ctx ');
+    console.log(JSON.ctx);
+    if (ctx.secure) {
+      await next();
+    } else if (ctx.method === 'GET' || ctx.method === 'HEAD') {
+      ctx.redirect(ctx.href.replace(/^http:\/\//i, 'https://'));
+    } else {
+      ctx.body = {
+        error: 'invalid_request',
+        error_description: 'do yourself a favor and only use https',
+      };
+      ctx.status = 400;
+    }
+  });
 
   expressApp.get('/interaction/:grant', async (req, res) => {
     console.log('/interaction/:grant call with url ', req.path);
@@ -156,9 +171,16 @@ oidc.initialize({
     }).catch(next);
   });
 
+
+
+
   // leave the rest of the requests to be handled by oidc-provider, there's a catch all 404 there
   expressApp.use(oidc.callback);
 
   // express listen
-  expressApp.listen(process.env.PORT);
+  // expressApp.listen(process.env.PORT);
+  let server = http.createServer(expressApp);
+  server.listen(process.env.PORT, () => {
+    console.log('server listen port ', process.env.PORT);
+  });
 });

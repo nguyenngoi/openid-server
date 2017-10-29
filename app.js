@@ -64,6 +64,18 @@ const oidc = new Provider(`https://${process.env.HEROKU_APP_NAME}.herokuapp.com`
     revocation: true,
     sessionManagement: true,
   },
+  clientCacheDuration: 1 * 24 * 60 * 60, // 1 day in seconds,
+  ttl: {
+    AccessToken: 1 * 60 * 60, // 1 hour in seconds
+    AuthorizationCode: 10 * 60, // 10 minutes in seconds
+    ClientCredentials: 10 * 60, // 10 minutes in seconds
+    IdToken: 1 * 60 * 60, // 1 hour in seconds
+    RefreshToken: 1 * 24 * 60 * 60, // 1 day in seconds
+
+    // HEROKU EXAMPLE ONLY, do not use the following expiration unless you want to drop dynamic
+    //   registrations 24 hours after registration
+    RegistrationAccessToken: 1 * 24 * 60 * 60, // 1 day in seconds
+  },
 });
 
 const keystore = require('./keystore.json');
